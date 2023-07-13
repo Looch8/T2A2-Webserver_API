@@ -21,3 +21,11 @@ I have chosen this database system due to the comprehensive set of featues inclu
 Furthermore, it is effective and manipulating and managing data which is important for data such as job applications that are constantly changing.
 
 The major drawback to using PostgreSQL is the complexity involved. Due to PostgreSQL's extensive feature set, this can make the system more complex to manage and figure. Fortunately, as I am not expecting large amounts of data to occur, this should not be too much of an issue.
+
+## R4
+
+an ORM is a software technique that allows developers to map object-oriented models to relational databases, therefore, simplifying the interaction between the code and the database. Key functionalities and benefits of using an ORM include:
+
+-   Language Consistency: Developers can write code in their preferred programming language instead of writing SQL statements.
+-   Object-Relational Mapping: The ORM establishes a mapping between application objects and database tables, automatically translating operations into SQL statements.
+-   Simplified CRUD Operations: An ORM provides high-level APIs and methods for Create, Read, Update, and Delete operations, reducing the complexeties of SQL commands.
