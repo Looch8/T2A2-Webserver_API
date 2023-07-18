@@ -29,3 +29,9 @@ an ORM is a software technique that allows developers to map object-oriented mod
 -   Language Consistency: Developers can write code in their preferred programming language instead of writing SQL statements.
 -   Object-Relational Mapping: The ORM establishes a mapping between application objects and database tables, automatically translating operations into SQL statements.
 -   Simplified CRUD Operations: An ORM provides high-level APIs and methods for Create, Read, Update, and Delete operations, reducing the complexeties of SQL commands.
+
+## R5
+
+## R6
+
+![ERD](docs/ERD_job_app.drawio.png)
