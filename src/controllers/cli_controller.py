@@ -6,7 +6,7 @@ from models.applicant import Applicant
 # The db.commands blueprint is used to create the database tables and to drop the database tables.
 db_commands = Blueprint("db", __name__)
 
-# The db_commands.cli.command("create") decorator creates a command called create that can be run from the command line.
+# The db_commands.cli.command decorators creates commands to create, seed, and drop data and can be run from the command line.
 
 
 @db_commands.cli.command("create")
@@ -14,15 +14,11 @@ def create_db():
     db.create_all()
     print("Tables created")
 
- # The db_commands.cli.command("drop") decorator creates a command called drop that can be run from the command line.
-
 
 @db_commands.cli.command("drop")
 def drop_db():
     db.drop_all()
     print("Tables deleted")
-
- # The db_commands.cli.command("seed") decorator creates a command called seed that can be run from the command line.
 
 
 @db_commands.cli.command("seed")
