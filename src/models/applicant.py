@@ -3,14 +3,14 @@ from init import db, ma
 # The Applicant model is used to store information about applicants.
 
 
-class Applicant(db.model):
+class Applicant(db.Model):
     __tablename__ = "applicants"
 
-    id = db.column(db.Integer, primary_key=True)
-    name = db.column(db.String(100), nullable=False)
-    email = db.column(db.String(100), nullable=False, unique=True)
-    password = db.column(db.String(100), nullable=False)
-    is_admin = db.column(db.Boolean, default=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(100), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
 # The ApplicantSchema class is used to serialize and deserialize the Applicant model.
 
