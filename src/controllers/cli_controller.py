@@ -1,3 +1,4 @@
+# The cli_controller.py file is used to create, seed, and drop the database tables.
 from flask import Blueprint
 from init import db, bcrypt
 from models.applicant import Applicant
