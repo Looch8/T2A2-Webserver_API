@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 
 class Company(db.Model):
@@ -9,8 +10,12 @@ class Company(db.Model):
     location = db.Column(db.String(100), nullable=False)
     website = db.Column(db.String(100))
 
+    jobs = db.relationship(
+        "Job", back_populates="company", cascade="all, delete")
+
 
 class CompanySchema(ma.Schema):
+    jobs = fields.List(fields.Nested("jobSchema", exclude=["company"]))
 
     class Meta:
         fields = ("id", "name", "location", "website")

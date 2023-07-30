@@ -8,18 +8,25 @@ class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.Date)
+    date_posted = db.Column(db.String(50), nullable=False)
 
     # The db.relationship() function is used to create a relationship between the Job model and the Company model.
     company_id = db.Column(db.Integer, db.ForeignKey(
         "companies.id"), nullable=False)
 
     company = db.relationship("Company", back_populates="jobs")
+    applications = db.relationship(
+        "Application", back_populates="job", cascade="all, delete")
+
+    statuses = db.relationship(
+        "Status", back_populates="job")
 
 
 class JobSchema(ma.Schema):
+    applications = fields.List(fields.Nested(
+        "ApplicationSchema"), exclude=["job"])
     # this line is used to nest the company data in the job data.
-    company = fields.Nested("CompanySchema", only=["id", "name"])
+    companies = fields.Nested("CompanySchema", only=["id", "name"])
 
     class Meta:
         fields = ("id", "title", "description", "date_posted", "company_id")

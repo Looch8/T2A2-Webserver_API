@@ -8,14 +8,18 @@ class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     offer_status = db.Column(db.String(100), nullable=False)
 
-    # The db.relationship() function is used to create a relationship between the Job model and the Company model.
     job_id = db.Column(db.Integer, db.ForeignKey("jobs.id"))
 
-    # The back_populates argument is used to create a relationship between the Job model and the Company model.
-    job = db.relationship("Job", back_populates="statuses")
+    job = db.relationship(
+        "Job", back_populates="statuses")
+
+    applications = db.relationship(
+        "Application", back_populates="status", cascade="all, delete")
 
 
 class StatusSchema(ma.Schema):
+    applications = fields.List(fields.Nested(
+        "ApplicationSchema"), exclude=["status"])
     job = fields.Nested("JobSchema", only=["id", "title"])
 
     class Meta:
