@@ -11,5 +11,12 @@ class Company(db.Model):
 
 
 class CompanySchema(ma.Schema):
+
     class Meta:
         fields = ("id", "name", "location", "website")
+        ordered = True  # this line is used to order the fields in the schema.
+
+
+# The schemas are used to serialize the data.
+company_schema = CompanySchema()
+companies_schema = CompanySchema(many=True)

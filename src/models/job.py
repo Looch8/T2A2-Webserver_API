@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 
 class Job(db.Model):
@@ -17,5 +18,14 @@ class Job(db.Model):
 
 
 class JobSchema(ma.Schema):
+    # this line is used to nest the company data in the job data.
+    company = fields.Nested("CompanySchema", only=["id", "name"])
+
     class Meta:
         fields = ("id", "title", "description", "date_posted", "company_id")
+        ordered = True  # this line is used to order the fields in the schema.
+
+
+# The schemas are used to serialize the data.
+job_schema = JobSchema()
+jobs_schema = JobSchema(many=True)
