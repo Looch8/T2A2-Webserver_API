@@ -9,6 +9,9 @@ from controllers.job_controller import jobs_bp
 def create_app():
     app = Flask(__name__)
 
+    # This line is used to prevent the JSON responses from being sorted alphabetically so our ordered = True statement works as intended.
+    app.json.sort_keys = False
+
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         "DATABASE_URL")  # This is the database URL, it is in the .env file
 

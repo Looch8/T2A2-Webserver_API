@@ -30,7 +30,7 @@ class JobSchema(ma.Schema):
 
     class Meta:
         fields = ("id", "title", "description",
-                  "date_posted", "company_id", "company.name")
+                  "date_posted", "company_id", "company.name")  # The fields are used to specify the fields that will be serialized.
         ordered = True  # this line is used to order the fields in the schema.
 
 
