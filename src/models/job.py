@@ -29,7 +29,8 @@ class JobSchema(ma.Schema):
     companies = fields.Nested("CompanySchema", only=["id", "name"])
 
     class Meta:
-        fields = ("id", "title", "description", "date_posted", "company_id")
+        fields = ("id", "title", "description",
+                  "date_posted", "company_id", "company.name")
         ordered = True  # this line is used to order the fields in the schema.
 
 
