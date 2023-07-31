@@ -3,6 +3,7 @@ import os
 from init import db, ma, bcrypt, jwt
 from controllers.cli_controller import db_commands
 from controllers.auth_controller import auth_bp
+from controllers.job_controller import jobs_bp
 
 
 def create_app():
@@ -22,5 +23,6 @@ def create_app():
     # The app.register_blueprint() method is used to register the blueprints.
     app.register_blueprint(db_commands)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(jobs_bp)
 
     return app
