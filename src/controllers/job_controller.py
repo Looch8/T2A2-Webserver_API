@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from init import db
 from models.job import Job, jobs_schema, job_schema
-from datetime import date
+from models.application import Application, application_schema, applications_schema
+from datetime import datetime
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 # CRUD functionality for the Job model
@@ -76,3 +77,37 @@ def update_job(id):
         return job_schema.dump(job)
     else:
         return {"error": f"Job not found with id {id}"}, 404
+
+
+# CRUD functionality for the Application model
+# This route is used to create an application for a job.
+@jobs_bp.route('/<int:job_id>/applications', methods=["POST"])
+@jwt_required()
+def create_application(job_id):
+    body_data = request.get_json()
+    stmt = db.select(Job).where(Job.id == job_id)
+    job = db.session.scalar(stmt)
+    if job:
+        # Convert the date_applied string to a date object
+        date_applied = datetime.strptime(
+            body_data.get("date_applied"), "%Y-%m-%d").date()
+
+        # Status ID is provided in the request data
+        status_id = body_data.get("status_id")
+        if status_id is None:
+            return {"error": "Status ID is required in the request body"}, 400
+
+        application = Application(
+            date_applied=date_applied,
+            # This passes the applicant id from the JWT token.
+            applicant_id=get_jwt_identity(),
+            # This passes the model instance to the model relationship.
+            job=job,
+            status_id=status_id  # Set the status_id to the provided value
+        )
+
+        db.session.add(application)
+        db.session.commit()
+        return application_schema.dump(application), 201
+    else:
+        return {"error": f"Job not found with id {job_id}"}, 404
