@@ -51,6 +51,7 @@ def seed_db():
                   password=(bcrypt.generate_password_hash('user1pw').decode('utf-8')))
     ]
     db.session.add_all(applicants)
+    db.session.commit()
 
     jobs = [
         Job(title="Software Engineer",
@@ -70,6 +71,43 @@ def seed_db():
             ),
     ]
     db.session.add_all(jobs)
+    db.session.commit()
+
+    # Create status objects
+    statuses = [
+        Status(offer_status="Pending", job=jobs[0]),
+        Status(offer_status="Offered", job=jobs[1]),
+        Status(offer_status="Rejected", job=jobs[2]),
+        Status(offer_status="Accepted", job=jobs[2]),
+        Status(offer_status="Declined", job=jobs[1]),
+        Status(offer_status="Withdrawn", job=jobs[0]),
+    ]
+    db.session.add_all(statuses)
+    db.session.commit()
+
+    applications = [
+        Application(
+            date_applied="2021-01-01",
+            applicant=applicants[0],
+            job=jobs[0],
+            status=statuses[0]
+        ),
+        Application(
+            date_applied="2022-03-09",
+            applicant=applicants[1],
+            job=jobs[1],
+            status=statuses[1]
+        ),
+        Application(
+            date_applied="2021-03-15",
+            applicant=applicants[0],
+            job=jobs[2],
+            status=statuses[2]
+        )
+    ]
+
+    db.session.add_all(applications)
+
     db.session.commit()
 
     print("Tables seeded")
