@@ -111,3 +111,5 @@ def create_application(job_id):
         return application_schema.dump(application), 201
     else:
         return {"error": f"Job not found with id {job_id}"}, 404
+
+# This route is used to delete an application from the database.
