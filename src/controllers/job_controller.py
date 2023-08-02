@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from init import db
 from models.job import Job, jobs_schema, job_schema
 from models.application import Application, application_schema, applications_schema
+from models.company import Company, company_schema, companies_schema
 from datetime import datetime
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -104,6 +105,7 @@ def create_application(job_id):
             # This passes the model instance to the model relationship.
             job=job,
             status_id=status_id  # Set the status_id to the provided value
+
         )
 
         db.session.add(application)
@@ -112,4 +114,32 @@ def create_application(job_id):
     else:
         return {"error": f"Job not found with id {job_id}"}, 404
 
+
 # This route is used to delete an application from the database.
+@jobs_bp.route('/<int:job_id>/applications/<int:application_id>', methods=["DELETE"])
+def delete_application(job_id, application_id):
+    stmt = db.select(Application).where(
+        Application.id == application_id)
+    application = db.session.scalar(stmt)
+    if application:
+        db.session.delete(application)
+        db.session.commit()
+        return {"message": f"Application with id {application_id} has been deleted"}
+    else:
+        return {"error": f"Application not found with id {application_id}"}, 404
+
+
+# This route is used to update an application in the database.
+@jobs_bp.route('/<int:job_id>/applications/<int:application_id>', methods=["PUT", "PATCH"])
+@jwt_required()
+def update_application(job_id, application_id):
+    body_data = request.get_json()
+    stmt = db.select(Application).where(Application.id == application_id)
+    application = db.session.scalar(stmt)
+    if application:
+        application.date_applied = body_data.get(
+            "date_applied") or application.date_applied
+        db.session.commit()
+        return application_schema.dump(application)
+    else:
+        return {"error": f"Application not found with id {application_id}"}, 404

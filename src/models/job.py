@@ -26,7 +26,8 @@ class JobSchema(ma.Schema):
     applications = fields.List(fields.Nested(
         "ApplicationSchema"), exclude=["job"])
     # this line is used to nest the company data in the job data.
-    companies = fields.Nested("CompanySchema", only=["id", "name"])
+    companies = fields.Nested("CompanySchema", only=[
+                              "id", "name"])
 
     class Meta:
         fields = ("id", "title", "description",
