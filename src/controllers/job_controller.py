@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from init import db
 from models.job import Job, jobs_schema, job_schema
 from models.company import Company, company_schema, companies_schema
+from models.applicant import Applicant
 from datetime import datetime, date
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from controllers.application_controller import applications_bp
@@ -55,6 +56,10 @@ def create_job():
 # This route is used to delete a job from the database.
 @jobs_bp.route('/<int:id>', methods=["DELETE"])
 def delete_job(id):
+    # The following code checks if the applicant is an admin. Only an admin may delete a job.
+    is_admin = authorise_as_admin()
+    if not is_admin:
+        return {"error": "You are not authorised to perform this action"}, 403
     stmt = db.select(Job).where(Job.id == id)
     job = db.session.scalar(stmt)
     if job:
@@ -80,3 +85,11 @@ def update_job(id):
         return job_schema.dump(job)
     else:
         return {"error": f"Job not found with id {id}"}, 404
+
+
+def authorise_as_admin():
+    # This function is used to authorise the user as an admin.
+    applicant_id = get_jwt_identity()
+    stmt = db.select(Applicant).where(Applicant.id == applicant_id)
+    applicant = db.session.scalar(stmt)
+    return applicant.is_admin
