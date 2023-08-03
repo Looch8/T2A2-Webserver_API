@@ -128,7 +128,7 @@ an ORM is a software technique that allows developers to map object-oriented mod
 
 **Expected Response Data (Error):**
 
--   Status Code: 401 (Unauthorized) or 400 (Bad Request)
+-   Status Code: 401 (Unauthorised) or 400 (Bad Request)
 -   JSON Object with an error message.
 
 ---
@@ -151,7 +151,7 @@ an ORM is a software technique that allows developers to map object-oriented mod
 
 **Expected Response Data (Error):**
 
--   Status Code: 401 (Unauthorized)
+-   Status Code: 401 (Unauthorised)
 -   JSON Object with an error message.
 
 ---
