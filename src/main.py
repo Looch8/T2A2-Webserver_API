@@ -20,11 +20,27 @@ def create_app():
     # This is a secret key, it is in the .env file and it is used to encrypt the JWT token
     app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
-    # This is used to handle validation errors
+    # error handlers
     @app.errorhandler(ValidationError)
     def validation_error(error):
         # This returns the validation error message as a JSON response with a 400 status code
         return error.messages, 400
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return {"error": "Bad request"}, 400
+
+    @app.errorhandler(401)
+    def unauthorized(error):
+        return {"error": "Unauthorized"}, 401
+
+    @app.errorhandler(403)
+    def forbidden(error):
+        return {"error": "Forbidden"}, 403
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return {"error": "Not found"}, 404
 
     db.init_app(app)
     ma.init_app(app)

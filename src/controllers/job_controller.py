@@ -6,12 +6,28 @@ from models.applicant import Applicant
 from datetime import datetime, date
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from controllers.application_controller import applications_bp
+import functools
 
 # CRUD functionality for the Job model
 
 jobs_bp = Blueprint('jobs', __name__, url_prefix='/jobs')
 jobs_bp.register_blueprint(
     applications_bp, url_prefix='/<int:job_id>/applications')
+
+
+# decorator function to check if the applicant is an admin, and therefore authorised to perform certain actions.
+def authorise_as_admin(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        applicant_id = get_jwt_identity()
+        stmt = db.select(Applicant).where(Applicant.id == applicant_id)
+        applicant = db.session.scalar(stmt)
+        if applicant.is_admin:
+            return fn(*args, **kwargs)
+        else:
+            return {"error": "You are not authorised to perform this action"}, 403
+
+    return wrapper
 
 
 # This route is used to get all the jobs from the database.
@@ -55,11 +71,9 @@ def create_job():
 
 # This route is used to delete a job from the database.
 @jobs_bp.route('/<int:id>', methods=["DELETE"])
+@jwt_required()
+@authorise_as_admin
 def delete_job(id):
-    # The following code checks if the applicant is an admin. Only an admin may delete a job.
-    is_admin = authorise_as_admin()
-    if not is_admin:
-        return {"error": "You are not authorised to perform this action"}, 403
     stmt = db.select(Job).where(Job.id == id)
     job = db.session.scalar(stmt)
     if job:
@@ -85,11 +99,3 @@ def update_job(id):
         return job_schema.dump(job)
     else:
         return {"error": f"Job not found with id {id}"}, 404
-
-
-def authorise_as_admin():
-    # This function is used to authorise the user as an admin.
-    applicant_id = get_jwt_identity()
-    stmt = db.select(Applicant).where(Applicant.id == applicant_id)
-    applicant = db.session.scalar(stmt)
-    return applicant.is_admin
