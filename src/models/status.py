@@ -1,6 +1,8 @@
 from init import db, ma
 from marshmallow import fields
 
+# Model for the statuses table
+
 
 class Status(db.Model):
     __tablename__ = "statuses"
@@ -17,6 +19,7 @@ class Status(db.Model):
         "Application", back_populates="status", cascade="all, delete")
 
 
+# The StatusSchema is used to serialize the data.
 class StatusSchema(ma.Schema):
     applications = fields.List(fields.Nested(
         "ApplicationSchema"), exclude=["status"])

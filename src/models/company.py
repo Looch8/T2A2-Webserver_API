@@ -1,6 +1,8 @@
 from init import db, ma
 from marshmallow import fields
 
+# Model for the companies table
+
 
 class Company(db.Model):
     __tablename__ = "companies"

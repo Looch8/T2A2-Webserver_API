@@ -7,26 +7,27 @@ from models.application import Application
 from models.company import Company
 from models.status import Status
 
-# The db.commands blueprint is used to create the database tables and to drop the database tables.
+# Blueprint to manage database commands
 db_commands = Blueprint("db", __name__)
 
 # The db_commands.cli.command decorators creates commands to create, seed, and drop data and can be run from the command line.
 
 
-@db_commands.cli.command("create")
+@db_commands.cli.command("create")  # Create the database tables
 def create_db():
     db.create_all()
     print("Tables created")
 
 
-@db_commands.cli.command("drop")
+@db_commands.cli.command("drop")  # Drop the database tables
 def drop_db():
     db.drop_all()
     print("Tables deleted")
 
 
-@db_commands.cli.command("seed")
+@db_commands.cli.command("seed")  # Seed the database tables with initial data
 def seed_db():
+    # Seed companies
     companies = [
         Company(name="Google",
                 location="Mountain View, CA",
@@ -43,7 +44,7 @@ def seed_db():
     ]
     db.session.add_all(companies)
     db.session.commit()
-
+    # Seed applicants
     applicants = [
         Applicant(name="admin", email="admin@admin.com",
                   password=bcrypt.generate_password_hash('123456').decode('utf-8'), is_admin=True),
@@ -52,7 +53,7 @@ def seed_db():
     ]
     db.session.add_all(applicants)
     db.session.commit()
-
+    # Seed jobs
     jobs = [
         Job(title="Software Engineer",
             description="A software engineer is a person who applies the principles of software engineering to computer software.",
@@ -73,7 +74,7 @@ def seed_db():
     db.session.add_all(jobs)
     db.session.commit()
 
-    # Create status objects
+    # Seed statuses
     statuses = [
         Status(offer_status="Pending", job=jobs[0]),
         Status(offer_status="Offered", job=jobs[1]),
@@ -84,7 +85,7 @@ def seed_db():
     ]
     db.session.add_all(statuses)
     db.session.commit()
-
+    # Seed applications
     applications = [
         Application(
             date_applied="2021-01-01",

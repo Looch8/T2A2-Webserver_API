@@ -10,6 +10,7 @@ import functools
 
 # CRUD functionality for the Job model
 
+# Blueprint for the job routes
 jobs_bp = Blueprint('jobs', __name__, url_prefix='/jobs')
 jobs_bp.register_blueprint(
     applications_bp, url_prefix='/<int:job_id>/applications')

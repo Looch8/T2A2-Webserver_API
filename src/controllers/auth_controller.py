@@ -6,16 +6,14 @@ from sqlalchemy.exc import IntegrityError
 from datetime import timedelta
 from psycopg2 import errorcodes
 
-# the auth_controller.py file is used to create the auth blueprint and to create the routes for the auth blueprint.
+# Create auth blueprint and routes for authentication
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-# this endpoint is used to login applicants.
 
 # Registration route
 
-
+# Register new applicants
 @auth_bp.route("/register", methods=["POST"])
-# this function is used to register applicants.
 def auth_register():
     try:
         body_data = request.get_json()
@@ -24,14 +22,13 @@ def auth_register():
         applicant = Applicant()
         applicant.name = body_data.get("name")
         applicant.email = body_data.get("email")
-        # checks if the password is in the request body.
         if body_data.get('password'):
+            # Hashes the password using the bcrypt library and store it.
             applicant.password = bcrypt.generate_password_hash(
                 body_data.get("password")).decode("utf-8")
 
         # adds the applicant to the database session.
         db.session.add(applicant)
-        # commits the changes to the database.
         db.session.commit()
         # returns the applicant as JSON.
         return applicant_schema.dump(applicant), 201
@@ -51,11 +48,11 @@ def auth_register():
 # this function is used to login applicants.
 def auth_login():
     body_data = request.get_json()
-    # Find user by email
+    # Find applicant by email
     stmt = db.select(Applicant).where(
         Applicant.email == body_data.get("email"))
     applicant = db.session.scalar(stmt)
-    # If user exists, and password matches, create access token
+    # If applicants exists, and password matches, create access token
     if applicant and bcrypt.check_password_hash(applicant.password, body_data.get("password")):
         token = create_access_token(identity=str(
             applicant.id), expires_delta=timedelta(days=1))

@@ -1,6 +1,8 @@
 from init import db, ma
 from marshmallow import fields
 
+# Model for the job applications
+
 
 class Application(db.Model):
     __tablename__ = "applications"
@@ -20,7 +22,7 @@ class Application(db.Model):
     status = db.relationship("Status", back_populates="applications")
 
 
-class ApplicationSchema(ma.Schema):
+class ApplicationSchema(ma.Schema):  # Schema for serializing the application data
     job = fields.Nested("JobSchema", only=["title"])
     applicant = fields.Nested("ApplicantSchema", only=["name", "email"])
     status = fields.Nested("StatusSchema", only=["offer_status"])

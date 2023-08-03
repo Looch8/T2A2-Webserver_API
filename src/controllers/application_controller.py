@@ -11,10 +11,12 @@ applications_bp = Blueprint(
 # CRUD functionality for the Application model
 
 
-# This route is used to create an application for a job.
+# Create Application Route
 @applications_bp.route('/', methods=["POST"])
 @jwt_required()
 def create_application(job_id):
+
+    # Creates a new application for a job. Retrieves JSON data from the request body and checks if the job exits, if it does, it creates a new application model instance and adds it to the database.
     body_data = request.get_json()
     stmt = db.select(Job).where(Job.id == job_id)
     job = db.session.scalar(stmt)
@@ -45,9 +47,10 @@ def create_application(job_id):
         return {"error": f"Job not found with id {job_id}"}, 404
 
 
-# This route is used to delete an application from the database.
+# Delete Application Route.
 @applications_bp.route('/<int:application_id>', methods=["DELETE"])
 def delete_application(job_id, application_id):
+    # Deletes an application from the database. Checks if the application exists, if it does, it deletes it from the database.
     stmt = db.select(Application).where(
         Application.id == application_id)
     application = db.session.scalar(stmt)
@@ -59,8 +62,9 @@ def delete_application(job_id, application_id):
         return {"error": f"Application not found with id {application_id}"}, 404
 
 
-# This route is used to update an application in the database.
+# Update Application Route
 @applications_bp.route('/<int:application_id>', methods=["PUT", "PATCH"])
+# Update an application in the database. Checks if the application exists, if it does, it updates it in the database.
 @jwt_required()
 def update_application(job_id, application_id):
     body_data = request.get_json()
