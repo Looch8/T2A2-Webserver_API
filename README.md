@@ -32,6 +32,262 @@ an ORM is a software technique that allows developers to map object-oriented mod
 
 ## R5
 
+### Application Controller
+
+**Endpoint Documentation:**
+
+#### Create Application Route
+
+**HTTP Method:** POST
+
+**Endpoint:** `/applications/`
+
+**Data Required:**
+
+-   `date_applied`: Date of the application (Format: "YYYY-MM-DD")
+-   `status_id`: ID of the status for the application
+
+**Authentication:** JWT token required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 201 (Created Successfully)
+-   JSON Object which contains the created application data.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 400 (Bad Request) or 404 (Not Found) or 401 (Unauthorised)
+-   JSON Object with an error message.
+
+---
+
+#### Delete Application Route
+
+**HTTP Method:** DELETE
+
+**Endpoint:** `/applications/<int:application_id>`
+
+**Authentication:** None required. Perhaps in future iteration I will make it so only an admin can delete an application.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object with a success message.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 404 (Not Found)
+-   JSON Object with an error message.
+
+---
+
+#### Update Application Route
+
+**HTTP Methods:** PUT, PATCH
+
+**Endpoint:** `/applications/<int:application_id>`
+
+**Data Required:**
+
+-   `date_applied` (optional): Updated date of application (Format: "YYYY-MM-DD")
+
+**Authentication:** JWT token required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object containing the updated application data.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 404 (Not Found)
+-   JSON Object with an error message.
+
+---
+
+### Auth Controller
+
+**Endpoint Documentation:**
+
+#### Register Applicant Route
+
+**HTTP Method:** POST
+
+**Endpoint:** `/auth/register`
+
+**Data Required:**
+
+-   `name`: Name of the applicant
+-   `email`: Email of the applicant
+-   `password`: Password of the applicant (Minimum length: 6 characters) required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 201 (Created)
+-   JSON Object containing the registered applicant data.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 401 (Unauthorized) or 400 (Bad Request)
+-   JSON Object with an error message.
+
+---
+
+#### Login Applicant Route
+
+**HTTP Method:** POST
+
+**Endpoint:** `/auth/login`
+
+**Data Required:**
+
+-   `email`: Email of the applicant
+-   `password`: Password of the applicant
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object containing the applicant's email, JWT token, and admin status.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 401 (Unauthorized)
+-   JSON Object with an error message.
+
+---
+
+### CLI Controller
+
+**Endpoint Documentation:**
+
+#### Create Database Tables Command
+
+**Command:** `flask db create`
+
+**Expected Output:**
+
+-   A message indicating that the tables have been created.
+
+---
+
+#### Drop Database Tables Command
+
+**Command:** `flask db drop`
+
+**Expected Output:**
+
+-   A message response indicating that the tables have been deleted.
+
+---
+
+#### Seed Database Tables Command
+
+**Command:** `flask db seed`
+
+**Expected Output:**
+
+-   A message response indicating that the tables have been seeded with initial data.
+
+---
+
+### Job Controller
+
+**Endpoint Documentation:**
+
+#### Get All Jobs Route
+
+**HTTP Method:** GET
+
+**Endpoint:** `/jobs/`
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object containing a list of job data.
+
+---
+
+#### Get Single Job Route
+
+**HTTP Method:** GET
+
+**Endpoint:** `/jobs/<int:id>`
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object containing the job data.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 404 (Not Found)
+-   JSON Object with an error message.
+
+---
+
+#### Create Job Route
+
+**HTTP Method:** POST
+
+**Endpoint:** `/jobs/`
+
+**Data Required:**
+
+-   `title`: Title of the job
+-   `description`: Description of the job
+
+**Authentication:** JWT token required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 201 (Created)
+-   JSON Object containing the created job data.
+
+---
+
+#### Delete Job Route
+
+**HTTP Method:** DELETE
+
+**Endpoint:** `/jobs/<int:id>`
+
+**Authentication:** JWT token and admin status required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object with a success message.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 404 (Not Found)
+-   JSON Object with an error message.
+
+---
+
+#### Update Job Route
+
+**HTTP Methods:** PUT, PATCH
+
+**Endpoint:** `/jobs/<int:id>`
+
+**Data Required:**
+
+-   `title` (optional): Updated title of the job
+-   `description` (optional): Updated description of the job
+
+**Authentication:** JWT token required.
+
+**Expected Response Data (Success):**
+
+-   Status Code: 200 (OK)
+-   JSON Object containing the updated job data.
+
+**Expected Response Data (Error):**
+
+-   Status Code: 404 (Not Found)
+-   JSON Object with an error message.
+
 ## R6
 
 ![ERD](docs/ERD_job_app.drawio.png)
