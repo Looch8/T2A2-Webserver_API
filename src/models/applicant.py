@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length
 
 # The Applicant model is used to store information about applicants.
 
@@ -22,6 +23,9 @@ class Applicant(db.Model):
 class ApplicantSchema(ma.Schema):
     applications = fields.List(fields.Nested(
         "ApplicationSchema", exclude=["applicant"]))  # this line is used to nest the application data in the applicant data.
+
+    password = fields.String(required=True, validate=Length(
+        min=6, error="Password must be at least 6 characters long."))
 
     class Meta:
         fields = ("id", "name", "email", "password",

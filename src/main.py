@@ -4,6 +4,8 @@ from init import db, ma, bcrypt, jwt
 from controllers.cli_controller import db_commands
 from controllers.auth_controller import auth_bp
 from controllers.job_controller import jobs_bp
+from controllers.application_controller import applications_bp
+from marshmallow.exceptions import ValidationError
 
 
 def create_app():
@@ -18,6 +20,12 @@ def create_app():
     # This is a secret key, it is in the .env file and it is used to encrypt the JWT token
     app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
+    # This is used to handle validation errors
+    @app.errorhandler(ValidationError)
+    def validation_error(error):
+        # This returns the validation error message as a JSON response with a 400 status code
+        return error.messages, 400
+
     db.init_app(app)
     ma.init_app(app)
     bcrypt.init_app(app)
@@ -27,5 +35,6 @@ def create_app():
     app.register_blueprint(db_commands)
     app.register_blueprint(auth_bp)
     app.register_blueprint(jobs_bp)
+    app.register_blueprint(applications_bp)
 
     return app

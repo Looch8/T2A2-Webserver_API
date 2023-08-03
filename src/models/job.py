@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length
 
 
 class Job(db.Model):
@@ -28,6 +29,12 @@ class JobSchema(ma.Schema):
     # this line is used to nest the company data in the job data.
     companies = fields.Nested("CompanySchema", only=[
                               "id", "name"])
+
+    # The validation parameter is used to validate the data before it is stored in the database.
+    title = fields.String(required=True, validate=Length(
+        min=2, error="Title must be at least 2 characters long."))
+    description = fields.String(required=True, validate=Length(
+        min=10), error="Description must be at least 10 characters long.")
 
     class Meta:
         fields = ("id", "title", "description",
