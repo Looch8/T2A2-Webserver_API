@@ -291,3 +291,14 @@ an ORM is a software technique that allows developers to map object-oriented mod
 ## R6
 
 ![ERD](docs/ERD_job_app.drawio.png)
+
+## R7
+
+Third party services that this app uses includes:
+
+**Flask**: A web framework which is using for building web applications in Python.
+**SQLAlchemy**: An Object Relational Mapping(ORM) extension for Flask that simplifies database management.
+**Marshmallow**: An extension for Flask that provides a library for Object serialisation.
+**Bcrypt**: An extension for Flask for password hashing and verification.
+**JWT-Extended**: An extension for Flask that provides support for authentication and authorisation by use of JSON Web Tokens (JWT).
+**Psycopg2**: A PostgreSQL extension which is used for connecting and interacting with PostgreSQL databases.
