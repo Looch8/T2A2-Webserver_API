@@ -290,7 +290,9 @@ an ORM is a software technique that allows developers to map object-oriented mod
 
 ## R6
 
-![ERD](docs/ERD_job_app.drawio.png)
+## ![ERD](docs/ERD_job_app.drawio.png)
+
+---
 
 ## R7
 
@@ -302,3 +304,43 @@ Third party services that this app uses includes:
 **Bcrypt**: An extension for Flask for password hashing and verification.
 **JWT-Extended**: An extension for Flask that provides support for authentication and authorisation by use of JSON Web Tokens (JWT).
 **Psycopg2**: A PostgreSQL extension which is used for connecting and interacting with PostgreSQL databases.
+
+---
+
+## R8
+
+The following describes relationships the models have with each other.
+
+1. **Job Model:**
+
+    - Represents a job posting.
+    - **Relationships:**
+        - One-to-Many with Company: Each job belongs to a single company.
+        - One-to-Many with Application: Each job can have multiple applications.
+        - One-to-One with Status: Each job can only have one status.
+
+2. **Company Model:**
+
+    - Represents a company that posts job openings.
+    - **Relationships:**
+        - One-to-Many with Job: Each company can have multiple job postings.
+
+3. **Application Model:**
+
+    - Represents an application made by an applicant for a specific job.
+    - **Relationships:**
+        - Many-to-One with Job: Each application belongs to a single job.
+        - Many-to-One with Applicant: Each application belongs to a single applicant.
+        - Many-to-One with Status: Each application has a specific status.
+
+4. **Applicant Model:**
+
+    - Represents an applicant who applies for jobs.
+    - **Relationships:**
+        - One-to-Many with Application: Each applicant can have multiple applications.
+
+5. **Status Model:**
+    - Represents the status of an application (e.g., Pending, Offered, Rejected).
+    - **Relationships:**
+        - Many-to-One with Job: Each status belongs to a single job.
+        - One-to-Many with Application: Each status can be associated with multiple applications.
